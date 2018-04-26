@@ -1,0 +1,37 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(108,129,214);
+}
+
+.goBack {
+  margin-top: 10px;
+  padding: 5px;
+  width: 100px;
+  height: 25px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.goBack a{
+  text-decoration: none;
+  display: block;
+  height: inherit;
+}
+
+.messageCard {
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 50px;
+  border-radius: 5px;
+  border: 5px solid green;
+  padding: 10px;
+  color: #FFF;
+}
+
+.error {
+  color: red;
+}

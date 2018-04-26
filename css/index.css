@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: rgb(108,129,214);
+}
+
+
+.startForm {
+  padding: 10px;
+  border: 5px solid black;
+  border-radius: 20px;
+  margin:0 auto;
+  margin-top: 50px;
+  width: 400px;
+  text-align: center;
+}
+
+.startFormUnit {
+  margin-top: 25px;
+}
+
+.startFormButton>input {
+  margin-top: 20px;
+  width: 100px;
+  height: 50px;
+  border-radius: 15px;
+  border: 2px solid black;
+  background: transparent;
+  color: #fff;
+}
+
+.startFormUnit>label {
+  display: block;
+  color: #fff;
+}
+
+.startFormUnit>input {
+  width: 250px;
+  border-radius: 10px;
+  height: 40px;
+}
