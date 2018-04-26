@@ -14,7 +14,6 @@
         };
       }
     }
-    print_r($varriables_arr);
     return $varriables_arr;
   }
 
@@ -24,6 +23,15 @@
       foreach ($variable_array as $variable){
         if($variable != "EXECDATE" && $variable != "ENDDATE"){
           $tmpl=str_replace("%" . $variable . "%",$_POST["$variable"],$tmpl);
+        }
+        else {
+          $run_date = date("d.m.Y H:i:s");
+          $end_date = date_create();
+          date_modify($end_date, $_POST["MONTHNUM"] . "month");
+          $end_date = date_format($end_date, "d.m.Y");
+
+          $tmpl=str_replace("%EXECDATE%",$run_date,$tmpl);
+          $tmpl=str_replace("%ENDDATE%",$end_date,$tmpl);
         }
       }
     $result=$result .  $tmpl . "<br>";
@@ -62,15 +70,9 @@
         $file = fopen('template.tpl', 'r');
         $tpl = file('template.tpl');
 
-        // Date calculating
-        $run_date = date("d.m.Y H:i:s");
-        $end_date = date_create();
-        date_modify($end_date, $month_num . "month");
-        $end_date = date_format($end_date, "d.m.Y");
 
         // Replacing with neeeded values
-
-          echo replacing($tpl,count_variables($tpl));
+          $text =  replacing($tpl,count_variables($tpl));
       // }
     }
     // else if(isset($argv)){ // if script was run from cli;
@@ -128,6 +130,6 @@
       $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
       $fields = count_variables($tpl);
-      echo count($fields);
-      include('form.html');
+
+      include('form.php');
     }
