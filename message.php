@@ -1,5 +1,5 @@
 <?php
-  require_once('script.php');
+  require_once('index.php');
 ?>
 
 <!DOCTYPE html>
