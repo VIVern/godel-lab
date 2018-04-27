@@ -43,37 +43,32 @@
 
     if($_POST){ //if script was run from browser
 
-      //checking for errors
-      // if(!$_POST['username']){
-      //   array_push($error,"No username written!");
-      // }
-      // if(!$_POST['number']){
-      //   array_push($error,"No number written!");
-      // }
-      // if(!$_POST['month_num']){
-      //     array_push($error,"No month written!");
-      // }
-      //
-      // // if there is some erorrs
-      // if(!empty($error)){
-      //   foreach ($error as $err) {
-      //     echo "<p class='error'>". $err . "</p>";
-      //   }
-      //   echo "<button class='goBack'><a href='./index.php'>Go back</a></dutton>";
-      //   return;
-      // }
-      // else {                             //if no any errors run main part
-        // $username = $_POST['username'];
-        // $number = $_POST['number'];
-        // $month_num = $_POST['month_num'];
+      $file = fopen('template.tpl', 'r');
+      $tpl = file('template.tpl');
 
-        $file = fopen('template.tpl', 'r');
-        $tpl = file('template.tpl');
+      // checking for errors
 
+      foreach (count_variables($tpl) as $value) {
+        if($value == "EXECDATE" || $value == "ENDDATE"){
+          continue;
+        }
+        if(!$_POST["$value"]){
+          array_push($error,"No " . $value ." written!");
+        }
+      }
 
+      // if there is some erorrs
+      if(!empty($error)){
+        foreach ($error as $err) {
+          echo "<p class='error'>". $err . "</p>";
+        }
+        echo "<button class='goBack'><a href='./index.php'>Go back</a></dutton>";
+        return;
+      }
+      else { //if no any errors run main part
         // Replacing with neeeded values
           $text =  replacing($tpl,count_variables($tpl));
-      // }
+      }
     }
     // else if(isset($argv)){ // if script was run from cli;
     //
