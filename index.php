@@ -46,8 +46,6 @@
       foreach ($variable_array as $variable){
         if($variable != "EXECDATE" && $variable != "ENDDATE"){
           $tmpl=str_replace("%" . $variable . "%",$argv[$i],$tmpl);
-          echo $i;
-          print_r($argv[$i]);
           $i++;
         }
         else {
@@ -61,7 +59,7 @@
         }
       }
     $i=1;
-    $result=$result .  $tmpl . "\n";
+    $result=$result .  $tmpl;
     }
     return $result;
   }
@@ -99,16 +97,16 @@
     }
     else if(isset($argv)){ // if script was run from cli;
 
-      print_r($argv);
+      $file = fopen('template.tpl', 'r');
+      $tpl = file('template.tpl');
+
       //cheking for erros
-      if(!$argv[1]){
-        array_push($error,"No username written!");
+
+      if(count(count_variables($tpl)) > count($argv)+1){
+        array_push($error,"You missed some arguments");
       }
-      if(!$argv[2]){
-        array_push($error,"No number written!");
-      }
-      if(!$argv[3]){
-          array_push($error,"No month written!");
+      else if(count(count_variables($tpl)) < count($argv)+1) {
+        array_push($error,"You wrote some extra arguments arguments");
       }
 
       //if there is an erorr
@@ -123,8 +121,7 @@
         // $number = $argv[2];
         // $month_num = $argv[3];
 
-        $file = fopen('template.tpl', 'r');
-        $tpl = file('template.tpl');
+
 
         // Date calculating
         // $run_date = date("d.m.Y H:i:s");
