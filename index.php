@@ -3,13 +3,14 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
 
+  //counting variabels in template wich we should replace
   function count_variables($template){
     $varriables_arr= array();
     $remove_symbols=array("%"=>"");
     foreach ($template as $val) {
-      $split_val = explode(" ",$val); // spliting our string to words
+      $split_val = explode(" ",$val);                                                 // spliting our string to words
       foreach ($split_val as $str) {
-        if(preg_match('/%\D{1,255}%/',$str)){ // check if word is template variable
+        if(preg_match('/%\D{1,255}%/',$str)){                                         // check if word is template variable
           array_push($varriables_arr,strtr(substr(trim($str),0,-1),$remove_symbols)); //to get clear variable name;
         };
       }
@@ -17,6 +18,7 @@
     return $varriables_arr;
   }
 
+  //replacing variabels in template while this script will be runing on browser
   function replacing($template, $variable_array){
     $result = "";
     foreach ($template as $tmpl){
@@ -39,9 +41,10 @@
     return $result;
   }
 
+  //replacing variabeles in template while this script will be runing on cli mod
   function replacing_cli($template, $variable_array,$argv){
     $result = "";
-    $i=1;
+    $i=1;                                                         // index to get elements from $argv array
     foreach ($template as $tmpl){
       foreach ($variable_array as $variable){
         if($variable != "EXECDATE" && $variable != "ENDDATE"){
@@ -66,13 +69,12 @@
 
     $error = array();
 
-    if($_POST){ //if script was run from browser
+    if($_POST){                                                   //if script was run from browser
 
       $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
 
       // checking for errors
-
       foreach (count_variables($tpl) as $value) {
         if($value == "EXECDATE" || $value == "ENDDATE"){
           continue;
@@ -90,18 +92,17 @@
         echo "<button class='goBack'><a href='./index.php'>Go back</a></dutton>";
         return;
       }
-      else { //if no any errors run main part
+      else {                                                      //if no any errors run main part
         // Replacing with neeeded values
-          $text =  replacing($tpl,count_variables($tpl));
+        $text =  replacing($tpl,count_variables($tpl));
       }
     }
-    else if(isset($argv)){ // if script was run from cli;
+    else if(isset($argv)){                                        // if script was run from cli;
 
       $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
 
       //cheking for erros
-
       if(count(count_variables($tpl)) > count($argv)+1){
         array_push($error,"You missed some arguments");
       }
@@ -116,38 +117,14 @@
         }
         return;
       }
-      else {                        //if there is no any erorr
-        // $username = $argv[1];
-        // $number = $argv[2];
-        // $month_num = $argv[3];
-
-
-
-        // Date calculating
-        // $run_date = date("d.m.Y H:i:s");
-        // $end_date = date_create();
-        // date_modify($end_date, $month_num . "month");
-        // $end_date = date_format($end_date, "d.m.Y");
-
+      else {                                                      //if there is no any erorr
         // Replacing with neeeded values
-
-        $text=""; //result string will be placed here
-
-        // foreach ($tpl as $val) {
-        //   $val=str_replace("%USERNAME%",$username,$val);
-        //   $val=str_replace("%NUMBER%",$number,$val);
-        //   $val=str_replace("%MONTHNUM%",$month_num ,$val);
-        //
-        //   $val=str_replace("%EXECDATE%",$run_date ,$val);
-        //   $val=str_replace("%ENDDATE%",$end_date ,$val);
-        //   $text = $text .  $val;
-        // }
         $text =  replacing_cli($tpl,count_variables($tpl),$argv);
-        echo $text; //to make echo into cli (if script was started from browser echo will be made in massage.php)
+        echo $text;                                               //to make echo into cli (if script was started from browser echo will be made in massage.php)
 
       }
     }
-    else {
+    else {                                                        // if index.php runed from browser 1st time with no data in post.
       $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
       $fields = count_variables($tpl);
