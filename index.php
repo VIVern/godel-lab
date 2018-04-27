@@ -39,6 +39,33 @@
     return $result;
   }
 
+  function replacing_cli($template, $variable_array,$argv){
+    $result = "";
+    $i=1;
+    foreach ($template as $tmpl){
+      foreach ($variable_array as $variable){
+        if($variable != "EXECDATE" && $variable != "ENDDATE"){
+          $tmpl=str_replace("%" . $variable . "%",$argv[$i],$tmpl);
+          echo $i;
+          print_r($argv[$i]);
+          $i++;
+        }
+        else {
+          $run_date = date("d.m.Y H:i:s");
+          $end_date = date_create();
+          date_modify($end_date, $argv[3] . "month");
+          $end_date = date_format($end_date, "d.m.Y");
+
+          $tmpl=str_replace("%EXECDATE%",$run_date,$tmpl);
+          $tmpl=str_replace("%ENDDATE%",$end_date,$tmpl);
+        }
+      }
+    $i=1;
+    $result=$result .  $tmpl . "\n";
+    }
+    return $result;
+  }
+
     $error = array();
 
     if($_POST){ //if script was run from browser
@@ -70,57 +97,59 @@
           $text =  replacing($tpl,count_variables($tpl));
       }
     }
-    // else if(isset($argv)){ // if script was run from cli;
-    //
-    //   //cheking for erros
-    //   if(!$argv[1]){
-    //     array_push($error,"No username written!");
-    //   }
-    //   if(!$argv[2]){
-    //     array_push($error,"No number written!");
-    //   }
-    //   if(!$argv[3]){
-    //       array_push($error,"No month written!");
-    //   }
-    //
-    //   //if there is an erorr
-    //   if(!empty($error)){
-    //     foreach ($error as $err) {
-    //       echo  $err . "\n";
-    //     }
-    //     return;
-    //   }
-    //   else {                        //if there is no any erorr
-    //     $username = $argv[1];
-    //     $number = $argv[2];
-    //     $month_num = $argv[3];
-    //
-    //     $file = fopen('template.tpl', 'r');
-    //     $tpl = file('template.tpl');
-    //
-    //     // Date calculating
-    //     $run_date = date("d.m.Y H:i:s");
-    //     $end_date = date_create();
-    //     date_modify($end_date, $month_num . "month");
-    //     $end_date = date_format($end_date, "d.m.Y");
-    //
-    //     // Replacing with neeeded values
-    //
-    //     $text=""; //result string will be placed here
-    //
-    //     foreach ($tpl as $val) {
-    //       $val=str_replace("%USERNAME%",$username,$val);
-    //       $val=str_replace("%NUMBER%",$number,$val);
-    //       $val=str_replace("%MONTHNUM%",$month_num ,$val);
-    //
-    //       $val=str_replace("%EXECDATE%",$run_date ,$val);
-    //       $val=str_replace("%ENDDATE%",$end_date ,$val);
-    //       $text = $text .  $val;
-    //     }
-    //     echo $text; //to make echo into cli (if script was started from browser echo will be made in massage.php)
-    //
-    //   }
-    // }
+    else if(isset($argv)){ // if script was run from cli;
+
+      print_r($argv);
+      //cheking for erros
+      if(!$argv[1]){
+        array_push($error,"No username written!");
+      }
+      if(!$argv[2]){
+        array_push($error,"No number written!");
+      }
+      if(!$argv[3]){
+          array_push($error,"No month written!");
+      }
+
+      //if there is an erorr
+      if(!empty($error)){
+        foreach ($error as $err) {
+          echo  $err . "\n";
+        }
+        return;
+      }
+      else {                        //if there is no any erorr
+        // $username = $argv[1];
+        // $number = $argv[2];
+        // $month_num = $argv[3];
+
+        $file = fopen('template.tpl', 'r');
+        $tpl = file('template.tpl');
+
+        // Date calculating
+        // $run_date = date("d.m.Y H:i:s");
+        // $end_date = date_create();
+        // date_modify($end_date, $month_num . "month");
+        // $end_date = date_format($end_date, "d.m.Y");
+
+        // Replacing with neeeded values
+
+        $text=""; //result string will be placed here
+
+        // foreach ($tpl as $val) {
+        //   $val=str_replace("%USERNAME%",$username,$val);
+        //   $val=str_replace("%NUMBER%",$number,$val);
+        //   $val=str_replace("%MONTHNUM%",$month_num ,$val);
+        //
+        //   $val=str_replace("%EXECDATE%",$run_date ,$val);
+        //   $val=str_replace("%ENDDATE%",$end_date ,$val);
+        //   $text = $text .  $val;
+        // }
+        $text =  replacing_cli($tpl,count_variables($tpl),$argv);
+        echo $text; //to make echo into cli (if script was started from browser echo will be made in massage.php)
+
+      }
+    }
     else {
       $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
