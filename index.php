@@ -10,7 +10,7 @@
     foreach ($template as $val) {
       $split_val = explode(" ", $val);                                                 // spliting our string to words
       foreach ($split_val as $str) {
-        if(preg_match('/%\D{1,255}%/', $str)) {                                // check if word is template variable
+        if (preg_match('/%\D{1,255}%/', $str)) {                                // check if word is template variable
           array_push($varriablesArr, strtr(substr(trim($str), 0, -1), $removeSymbols)); // to get clear variable name;
         };
       }
@@ -23,7 +23,7 @@
     $result = "";
     foreach ($template as $tmpl) {
       foreach ($variableArray as $variable) {
-        if($variable !== "EXECDATE" && $variable !== "ENDDATE") {
+        if ($variable !== "EXECDATE" && $variable !== "ENDDATE") {
           $tmpl=str_replace("%" . $variable . "%", $_POST["$variable"], $tmpl);
         }
         else {
@@ -47,7 +47,7 @@
     $i = 1;                                                         // index to get elements from $argv array
     foreach ($template as $tmpl) {
       foreach ($variableArray as $variable) {
-        if($variable !== "EXECDATE" && $variable !== "ENDDATE") {
+        if ($variable !== "EXECDATE" && $variable !== "ENDDATE") {
           $tmpl = str_replace("%" . $variable . "%", $argv[$i], $tmpl);
           $i++;
         }
@@ -69,23 +69,23 @@
 
     $error = [];
 
-    if(isset($argv) === true){                                        // if script was run from cli;
+    if (isset($argv) === true){                                        // if script was run from cli;
       $tpl = file('template.tpl');
 
       //cheking for erros
-      if(count(count_variables($tpl)) > count($argv) + 1) {
+      if (count(count_variables($tpl)) > count($argv) + 1) {
         array_push($error, "You missed some arguments");
       }
-      else if(count(count_variables($tpl)) < count($argv) + 1) {
+      else if (count(count_variables($tpl)) < count($argv) + 1) {
         array_push($error, "You wrote some extra arguments arguments");
       }
 
-      if(is_numeric($argv[3]) === false) {
+      if (is_numeric($argv[3]) === false) {
         array_push($error, " 3rd argument should be number");
       }
 
       //if there is an erorr
-      if(empty($error) === false) {
+      if (empty($error) === false) {
         foreach ($error as $err) {
           echo  $err . "\n";
         }
@@ -98,25 +98,25 @@
 
       }
     }
-    else if($_SERVER['REQUEST_METHOD'] === 'POST') {               //if script was run from browser
+    else if ($_SERVER['REQUEST_METHOD'] === 'POST') {               //if script was run from browser
       $tpl = file('template.tpl');
 
       // checking for errors
       foreach (count_variables($tpl) as $value) {
-        if($value === "EXECDATE" || $value === "ENDDATE") {
+        if ($value === "EXECDATE" || $value === "ENDDATE") {
           continue;
         }
-        if($value === "MONTHNUM" && is_numeric($_POST["$value"]) === false) {
+        if ($value === "MONTHNUM" && is_numeric($_POST["$value"]) === false) {
           array_push($error, $value . " should be number");
           continue;
         }
-        if(empty($_POST["$value"]) === true && $_POST["$value"] !== "0") {
+        if (empty($_POST["$value"]) === true && $_POST["$value"] !== "0") {
           array_push($error, "No " . $value . " written!");
         }
       }
 
       // if there is some erorrs
-      if(empty($error) === false) {
+      if (empty($error) === false) {
         return;
       }
       else {                                                      //if no any errors run main part
