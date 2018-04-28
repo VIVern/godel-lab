@@ -3,7 +3,7 @@
   ini_set('display_errors', 1);
   ini_set('display_startup_errors', 1);
 
-    $error = array();
+    $error = [];
 
     if($_POST){ //if script was run from browser
 
@@ -15,7 +15,7 @@
         array_push($error,"No number written!");
       }
       if(!$_POST['month_num']){
-          array_push($error,"No month written!");
+        array_push($error,"No month written!");
       }
 
       // if there is some erorrs
@@ -65,7 +65,7 @@
         array_push($error,"No number written!");
       }
       if(!$argv[3]){
-          array_push($error,"No month written!");
+        array_push($error,"No month written!");
       }
 
       //if there is an erorr
