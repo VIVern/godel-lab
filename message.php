@@ -14,7 +14,7 @@
 </head>
 <body>
   <?php
-    if(empty($error) === false){
+    if (empty($error) === false) {
       foreach ($error as $err) {
   ?>
       <p class='error'><?php echo $err ?></p>
@@ -25,10 +25,10 @@
   <?php
       return;
     }
-    if(isset($text) === false){
+    if (isset($text) === false) {
       return;
     }
-    else{
+    else {
   ?>
       <div class="messageCard">
         <?php echo $text; ?>
