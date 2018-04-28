@@ -17,6 +17,9 @@
       if(!$argv[3] && $argv[2] !== "0"){
         array_push($error,"No month written!");
       }
+      if(is_numeric($argv[3]) === false){
+        array_push($error,"Month should be number");
+      }
 
       //if there is an erorr
       if(empty($error) === false){
@@ -61,11 +64,14 @@
       if(empty($_POST['username']) === true){
         array_push($error,"No username written!");
       }
-      if(empty($_POST['number']) === true && $_POST['number'] !== "0"){
+      if(empty($_POST['number']) === true && $_POST['number'] !== "0"  ){
         array_push($error,"No number written!");
       }
-      if(empty($_POST['month_num']) === true && $_POST['month_num'] !== "0"){
+      if(empty($_POST['month_num']) === true && $_POST['month_num'] !== "0" ){
         array_push($error,"No month written!");
+      }
+      if(is_numeric($_POST['month_num']) === false){
+        array_push($error,"Month should be number");
       }
 
       // if there is some erorrs
