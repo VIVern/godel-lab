@@ -59,7 +59,7 @@
     }
   }
   else if ($_SERVER['REQUEST_METHOD'] === 'POST') { //if script was run from browser
-
+      
     //checking for errors
     if (empty($_POST['username']) === true) {
       array_push($error, "No username written!");
