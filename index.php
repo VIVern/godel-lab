@@ -62,10 +62,10 @@
       if(empty($_POST['username']) === true){
         array_push($error,"No username written!");
       }
-      if(empty($_POST['number']) === true){
+      if(empty($_POST['number']) === true && $_POST['number'] !== "0"){
         array_push($error,"No number written!");
       }
-      if(empty($_POST['month_num']) === true){
+      if(empty($_POST['month_num']) === true && $_POST['month_num'] !== "0"){
         array_push($error,"No month written!");
       }
 
