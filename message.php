@@ -14,6 +14,17 @@
 </head>
 <body>
     <?php
+      if(empty($error) === false){
+        foreach ($error as $err) {
+    ?>
+          <p class='error'><?php echo $err ?></p>
+    <?php
+        }
+    ?>
+          <button class='goBack'><a href='./index.php'>Go back</a></button>
+    <?php
+        return;
+      }
       if(!isset($text)){
         return;
       }

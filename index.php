@@ -70,10 +70,6 @@
 
       // if there is some erorrs
       if(empty($error) === false){
-        foreach ($error as $err) {
-          echo "<p class='error'>". $err . "</p>";
-        }
-        echo "<button class='goBack'><a href='./index.php'>Go back</a></dutton>";
         return;
       }
       else {                             //if no any errors run main part
