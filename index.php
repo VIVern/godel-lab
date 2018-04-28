@@ -30,7 +30,6 @@
         $number = $argv[2];
         $month_num = $argv[3];
 
-        $file = fopen('template.tpl', 'r');
         $tpl = file('template.tpl');
 
         // Date calculating
@@ -82,7 +81,6 @@
         $number = $_POST['number'];
         $month_num = $_POST['month_num'];
 
-        $file = fopen('template.tpl', 'r');
         $tpl = file('template.tpl');
 
         // Date calculating
