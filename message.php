@@ -1,5 +1,5 @@
 <?php
-  require_once('index.php');
+  require_once 'index.php';
 ?>
 
 <!DOCTYPE html>
@@ -13,17 +13,29 @@
   <link rel="stylesheet" href="css/message.css">
 </head>
 <body>
-    <?php
-      if(!isset($text)){
-        return;
+  <?php
+    if(empty($error) === false){
+      foreach ($error as $err) {
+  ?>
+      <p class='error'><?php echo $err ?></p>
+  <?php
       }
-      else{?>
-        <div class="messageCard">
-          <?php echo $text; ?>
-          <button class="goBack"><a href="./index.php">Go back</a></button>
+  ?>
+      <button class='goBack'><a href='./index.php'>Go back</a></button>
+  <?php
+      return;
+    }
+    if(isset($text) === false){
+      return;
+    }
+    else{
+  ?>
+      <div class="messageCard">
+        <?php echo $text; ?>
+        <button class="goBack"><a href="./index.php">Go back</a></button>
       </div>
-      <?php }?>
-
-
+  <?php
+    }
+  ?>
 </body>
 </html>

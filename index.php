@@ -5,13 +5,13 @@
 
   //counting variabels in template wich we should replace
   function count_variables($template){
-    $varriables_arr= array();
-    $remove_symbols=array("%"=>"");
+    $varriables_arr= [];
+    $remove_symbols=["%"=>""];
     foreach ($template as $val) {
       $split_val = explode(" ",$val);                                                 // spliting our string to words
       foreach ($split_val as $str) {
-        if(preg_match('/%\D{1,255}%/',$str)){                                         // check if word is template variable
-          array_push($varriables_arr,strtr(substr(trim($str),0,-1),$remove_symbols)); //to get clear variable name;
+        if(preg_match('/%\D{1,255}%/',$str)){                                // check if word is template variable
+          array_push($varriables_arr,strtr(substr(trim($str),0,-1),$remove_symbols)); // to get clear variable name;
         };
       }
     }
@@ -67,39 +67,9 @@
     return $result;
   }
 
-    $error = array();
+    $error = [];
 
-    if($_POST){                                                   //if script was run from browser
-
-      $file = fopen('template.tpl', 'r');
-      $tpl = file('template.tpl');
-
-      // checking for errors
-      foreach (count_variables($tpl) as $value) {
-        if($value == "EXECDATE" || $value == "ENDDATE"){
-          continue;
-        }
-        if(!$_POST["$value"]){
-          array_push($error,"No " . $value ." written!");
-        }
-      }
-
-      // if there is some erorrs
-      if(!empty($error)){
-        foreach ($error as $err) {
-          echo "<p class='error'>". $err . "</p>";
-        }
-        echo "<button class='goBack'><a href='./index.php'>Go back</a></dutton>";
-        return;
-      }
-      else {                                                      //if no any errors run main part
-        // Replacing with neeeded values
-        $text =  replacing($tpl,count_variables($tpl));
-      }
-    }
-    else if(isset($argv)){                                        // if script was run from cli;
-
-      $file = fopen('template.tpl', 'r');
+    if(isset($argv) === true){                                        // if script was run from cli;
       $tpl = file('template.tpl');
 
       //cheking for erros
@@ -110,8 +80,12 @@
         array_push($error,"You wrote some extra arguments arguments");
       }
 
+      if(is_numeric($argv[3]) === false) {
+        array_push($error," 3rd argument should be number");
+      }
+
       //if there is an erorr
-      if(!empty($error)){
+      if(empty($error) === false){
         foreach ($error as $err) {
           echo  $err . "\n";
         }
@@ -124,10 +98,34 @@
 
       }
     }
+    else if($_SERVER['REQUEST_METHOD'] === 'POST'){               //if script was run from browser
+      $tpl = file('template.tpl');
+
+      // checking for errors
+      foreach (count_variables($tpl) as $value) {
+        if($value == "EXECDATE" || $value == "ENDDATE"){
+          continue;
+        }
+        if($value == "MONTHNUM" && is_numeric($_POST["$value"]) === false) {
+          array_push($error,$value ." should be number");
+          continue;
+        }
+        if(empty($_POST["$value"]) === true && $_POST["$value"] !== "0"){
+          array_push($error,"No " . $value ." written!");
+        }
+      }
+
+      // if there is some erorrs
+      if(empty($error) === false){
+        return;
+      }
+      else {                                                      //if no any errors run main part
+        // Replacing with neeeded values
+        $text =  replacing($tpl,count_variables($tpl));
+      }
+    }
     else {                                                        // if index.php runed from browser 1st time with no data in post.
-      $file = fopen('template.tpl', 'r');
       $tpl = file('template.tpl');
       $fields = count_variables($tpl);
-
       include('form.php');
     }
