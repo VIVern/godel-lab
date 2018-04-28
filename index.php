@@ -11,10 +11,10 @@
       if(!$argv[1]){
         array_push($error,"No username written!");
       }
-      if(!$argv[2]){
+      if(!$argv[2] && $argv[2] !== "0"){
         array_push($error,"No number written!");
       }
-      if(!$argv[3]){
+      if(!$argv[3] && $argv[2] !== "0"){
         array_push($error,"No month written!");
       }
 
