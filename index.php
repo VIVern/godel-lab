@@ -62,7 +62,7 @@
     }
     return $result;
   }
-  
+
   $error = [];
   $scope = "";
 
@@ -121,7 +121,7 @@
     }
     else {                                                      //if no any errors run main part
       // Replacing with neeeded values
-      $text =  replacing($tpl, count_variables($tpl));
+      $text =  replacing($tpl, count_variables($tpl), $scope);
     }
   }
   else {                                                        // if index.php runed from browser 1st time with no data in post.
