@@ -67,7 +67,7 @@
         $result = $result .  $tmpl . "<br>";
       }
     }
-    
+
     return $result;
   }
 
@@ -84,7 +84,7 @@
       array_push($error, "You missed some arguments");
     }
     else if (count(count_variables($tpl)) < count($argv) + 1) {
-      array_push($error, "You wrote some extra arguments arguments");
+      array_push($error, "You wrote some extra arguments");
     }
 
     if (is_numeric($argv[3]) === false) {
