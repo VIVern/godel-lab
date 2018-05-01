@@ -13,29 +13,29 @@
   <link rel="stylesheet" href="css/message.css">
 </head>
 <body>
-    <?php
-      if (empty($error) === false) {
-        foreach ($error as $err) {
-    ?>
-          <p class='error'><?php echo $err ?></p>
-    <?php
-        }
-    ?>
-          <button class='goBack'><a href='./index.php'>Go back</a></button>
-    <?php
-        return;
+  <?php
+    if (empty($error) === false) {
+      foreach ($error as $err) {
+  ?>
+      <p class='error'><?php echo $err ?></p>
+  <?php
       }
-      if (!isset($text)) {
-        return;
-      }
-      else {
-    ?>
-        <div class="messageCard">
-          <?php echo $text; ?>
-          <button class="goBack"><a href="./index.php">Go back</a></button>
+  ?>
+      <button class='goBack'><a href='./index.php'>Go back</a></button>
+  <?php
+      return;
+    }
+    if (isset($text) === false) {
+      return;
+    }
+    else {
+  ?>
+      <div class="messageCard">
+        <?php echo $text; ?>
+        <button class="goBack"><a href="./index.php">Go back</a></button>
       </div>
-    <?php
-      }
-    ?>
+  <?php
+    }
+  ?>
 </body>
 </html>

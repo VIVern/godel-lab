@@ -11,18 +11,18 @@
 <body>
   <div class="startForm">
     <form action="message.php" method="POST" >
-      <div class="startFormUnit">
-        <label for="username">Username</label>
-        <input id="username" name="username" type="text">
-      </div>
-      <div class="startFormUnit">
-        <label for="number">Number</label>
-        <input id="number" name="number" type="text">
-      </div>
-      <div class="startFormUnit">
-        <label for="month">Month</label>
-        <input id="month" name="month_num" type="text">
-      </div>
+      <?php
+        foreach ($fields as $field) {
+          if ($field !== "EXECDATE" && $field !== "ENDDATE") {
+        ?>
+          <div class="startFormUnit">
+            <label for="<?php echo $field ?>"><?php echo $field ?></label>
+            <input id="<?php echo $field ?>" name="<?php echo $field ?>" type="text">
+          </div>
+        <?php
+          }
+        }
+        ?>
       <div class="startFormButton">
         <input type="submit">
       </div>
