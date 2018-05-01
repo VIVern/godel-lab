@@ -4,7 +4,8 @@
   ini_set('display_startup_errors', 1);
 
   //counting variabels in template wich we should replace
-  function count_variables($template) {
+  function count_variables($template)
+  {
     $varriablesArr= [];
     $removeSymbols=["%" => ""];
     foreach ($template as $val) {
@@ -19,25 +20,24 @@
   }
 
   //replacing variabels in template while this script will be runing on browser
-  function replacing($template, $variableArray, $scope, $arr = null) {
+  function replacing($template, $variableArray, $scope, $arr = null)
+  {
     $result = "";
     $i = 1;
 
-    function browserOrCli($scope, $variable, $i, $arr=null) {                           // to know how replacing() should work while replace variables
+    function browserOrCli($scope, $variable, $i, $arr=null)                 // to know how replacing() should work while replace variables
+    {
       if ($scope === "browser") {
-        return $_POST["$variable"];                                                     // to know how replacing() should work while replace date
+        if ($variable === "EXECDATE" || $variable === "ENDDATE") {
+          return $_POST["MONTHNUM"];
+        }
+        return $_POST[$variable];                                            // to know how replacing() should work while replace date
       }
       else {
+        if ($variable === "EXECDATE" || $variable === "ENDDATE") {
+          return $arr[3];
+        }
         return $arr[$i];
-      }
-    }
-
-    function browserOrCliDate($scope, $arr) {
-      if ($scope === "browser") {
-        return $_POST["MONTHNUM"];
-      }
-      else {
-        return $arr[3];
       }
     }
 
@@ -50,24 +50,32 @@
         else {
           $runDate = date("d.m.Y H:i:s");
           $endDate = date_create();
-          date_modify($endDate, browserOrCliDate($scope, $arr) . "month");
+          date_modify($endDate, browserOrCli($scope, $variable, $i, $arr) . "month");
           $endDate = date_format($endDate, "d.m.Y");
 
           $tmpl = str_replace("%EXECDATE%", $runDate,$tmpl);
           $tmpl = str_replace("%ENDDATE%", $endDate,$tmpl);
         }
       }
+
       $i = 1;
-      $result = $result .  $tmpl . "<br>";
+
+      if ($scope === "cli") {
+        $result = $result .  $tmpl;
+      }
+      elseif ($scope === "browser") {
+        $result = $result .  $tmpl . "<br>";
+      }
     }
+    
     return $result;
   }
 
   $error = [];
   $scope = "";
+  $tpl = file('template.tpl');
 
   if (isset($argv) === true){                                        // if script was run from cli;
-    $tpl = file('template.tpl');
     $scope = "cli";                                                  // helps replace() understand where script is runing
 
 
@@ -98,7 +106,6 @@
     }
   }
   else if ($_SERVER['REQUEST_METHOD'] === 'POST') {               //if script was run from browser
-    $tpl = file('template.tpl');
     $scope = "browser";
 
     // checking for errors
@@ -106,10 +113,10 @@
       if ($value === "EXECDATE" || $value === "ENDDATE") {
         continue;
       }
-      if (empty($_POST["$value"]) === true && $_POST["$value"] !== "0") {
+      if (empty($_POST[$value]) === true && $_POST[$value] !== "0") {
         array_push($error, "No " . $value . " written!");
       }
-      else if ($value === "MONTHNUM" && is_numeric($_POST["$value"]) === false) {
+      else if ($value === "MONTHNUM" && is_numeric($_POST[$value]) === false) {
         array_push($error, $value . " should be number");
         continue;
       }
@@ -125,7 +132,6 @@
     }
   }
   else {                                                        // if index.php runed from browser 1st time with no data in post.
-    $tpl = file('template.tpl');
     $fields = count_variables($tpl);
     include('form.php');
   }

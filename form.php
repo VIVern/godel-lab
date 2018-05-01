@@ -12,8 +12,8 @@
   <div class="startForm">
     <form action="message.php" method="POST" >
       <?php
-        foreach($fields as $field){
-          if($field != "EXECDATE" && $field != "ENDDATE"){
+        foreach ($fields as $field) {
+          if ($field !== "EXECDATE" && $field !== "ENDDATE") {
         ?>
           <div class="startFormUnit">
             <label for="<?php echo $field ?>"><?php echo $field ?></label>
